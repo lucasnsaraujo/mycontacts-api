@@ -1,12 +1,12 @@
 const express = require('express');
 
+const routes = require('./routes');
+
 const app = express();
 
-const PORT = 1234;
+app.use(routes);
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World</h1>');
-});
+const PORT = 1234;
 
 app.listen(PORT, () => {
   console.log(`💻 Server started @ http://localhost:${PORT}`);
