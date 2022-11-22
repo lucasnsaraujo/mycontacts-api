@@ -30,6 +30,40 @@ class ContactsRepository {
     });
   }
 
+  findByEmail(email) {
+    return new Promise((resolve) => {
+      resolve(contacts.find((item) => item.email === email));
+    });
+  }
+
+  create({
+    name, email, phone, category_id,
+  }) {
+    return new Promise((resolve) => {
+      const newContact = {
+        id: v4(), name, email, phone, category_id,
+      };
+      contacts.push(newContact);
+      resolve(newContact);
+    });
+  }
+
+  update(id, {
+    name, email, phone, category_id,
+  }) {
+    return new Promise((resolve) => {
+      const updatedContact = {
+        id,
+        name,
+        email,
+        phone,
+        category_id,
+      };
+      contacts = contacts.map((item) => (item.id === id ? updatedContact : item));
+      resolve(updatedContact);
+    });
+  }
+
   delete(id) {
     return new Promise((resolve) => {
       contacts = contacts.filter((item) => item.id !== id);
