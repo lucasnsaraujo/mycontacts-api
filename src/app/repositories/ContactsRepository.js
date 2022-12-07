@@ -5,19 +5,31 @@ class ContactsRepository {
     const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const rows = await db.query(`
     SELECT contacts.*, categories.name AS category_name FROM contacts
-    JOIN categories ON categories.id = contacts.category_id
+    LEFT JOIN categories ON categories.id = contacts.category_id
     ORDER BY contacts.name ${direction}
     `);
     return rows;
   }
 
   async findById(id) {
-    const [row] = await db.query({ text: 'SELECT * from contacts WHERE id = $1', values: [id] });
+    const [row] = await db.query({
+      text: `
+      SELECT contacts.*, categories.name AS category_name FROM contacts
+      LEFT JOIN categories ON categories.id = contacts.category_id
+      WHERE contacts.id = $1`,
+      values: [id],
+    });
     return row;
   }
 
   async findByEmail(email) {
-    const [row] = await db.query({ text: 'SELECT * from contacts WHERE email = $1', values: [email] });
+    const [row] = await db.query({
+      text: `
+      SELECT contacts.*, categories.name AS category_name FROM contacts
+      LEFT JOIN categories ON categories.id = contacts.category_id
+      WHERE contacts.email = $1`,
+      values: [email],
+    });
     return row;
   }
 
